@@ -39,5 +39,15 @@ function startPrompt() {
                 ]
             }
         ])
+        .then(answer => {
+            switch (answer.action) {
+                case 'View all Employees':
+                    db.query('SELECT employee.id,employee.first_name, employee.last_name, role.title, department.name, role.salary FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id;', (err, results) => {
+                        console.table(results);
+                        console.log(err);
+                    })
+                    exitPrompt()
+                    break;
+
 
 }
