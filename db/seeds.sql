@@ -14,7 +14,7 @@ VALUES  ("CEO/Executive Director"),
         ("Lead Scientist"),
         ("Daily Manager"),
         ("Talent Scout"),
-        ("Customer Service Manager"),
+        ("Customer Service Manager");
 
 
 INSERT INTO employees (first_name, last_name, dept_id, role_id, salary)
@@ -26,4 +26,4 @@ VALUES  ('Liana', 'Bird', null, 1, 200000),
         ('Kelly', 'Johnson', 1, 7, 50000),
         ('Leo', 'Kerr', 2, 3, 150000),
         ('Rebekah', 'Yang', 4, 2, 110000),
-        ('Marissa', 'Cooper', 2, 4, 80000),
+        ('Marissa', 'Cooper', 2, 4, 80000);
