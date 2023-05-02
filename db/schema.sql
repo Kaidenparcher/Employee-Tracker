@@ -1,16 +1,16 @@
 DROP DATABASE IF EXISTS staff_db;
 CREATE DATABASE staff_db;
 
-Use staff_db;
+USE staff_db;
 
 CREATE TABLE departments (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(200) NOT NULL
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50)
 );
 
 CREATE TABLE roles (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(200),
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(50),
     salary DECIMAL,
     department_id INT,
     FOREIGN KEY (department_id)
@@ -18,13 +18,16 @@ CREATE TABLE roles (
     ON DELETE SET NULL
 );
 
-
 CREATE TABLE employees (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(200) NOT NULL,
-    last_name VARCHAR(200) NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
     role_id INT,
-    manager_id INT, 
-    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL,
-    FOREIGN KEY (manager_id) REFERENCES employees(id) ON DELETE SET NULL     
+    manager_id INT,
+    FOREIGN KEY (role_id)
+    REFERENCES roles(id)
+    ON DELETE SET NULL,
+    FOREIGN KEY (manager_id)
+    REFERENCES employees(id)
+    ON DELETE SET NULL
 );

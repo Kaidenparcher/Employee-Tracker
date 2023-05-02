@@ -14,8 +14,8 @@ VALUES  ("CEO/Executive Director", 200000, null),
         ("CFO/Chief Financial Officer", 150000, 2),
         ("Account Executive", 95000, 2),
         ("Lead Consultant", 120000, 3),
-        ("HR Manager" 85000, 4),
-        ("Talent Scout" 65000, 3),
+        ("HR Manager", 85000, 4),
+        ("Talent Scout", 65000, 3),
         ("Customer Service Manager", 70000, 5);
 
 
