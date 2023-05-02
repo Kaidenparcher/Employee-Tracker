@@ -60,27 +60,26 @@ function viewDepartments() {
 
 // Function to view all roles
 function viewRoles() {
-    connection.query(
-      "SELECT * FROM roles",
-      (err, res) => {
-        if (err) throw err;
-        console.table(res);
-        start();
+  db.query(`SELECT * FROM roles`, (err, result) => {
+      if (err) {
+          console.error(err);
+          return 'error: failed to retrieve department list.';
       }
-    );
-  }
+      console.table(result);
+      init();
+  }); 
+}
   
   // Function to view all employees
   function viewEmployees() {
-    connection.query(
-      "SELECT employees.id, employees.first_name, employees.last_name, roles.name AS title, departments.name AS department, employees.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employees LEFT JOIN roles ON employees.role_id = roles.id LEFT JOIN departments ON roles.dept_id = departments.id LEFT JOIN employees manager ON employees.manager_id = manager.id",
-      (err, res) => {
-        if (err) throw err;
-        console.table(res);
-        start();
-      }
-    );
-  }
+    db.query(`SELECT * FROM employees`, (err, result) => {
+        if (err) {
+            console.error(err);
+        }
+        console.table(result);
+        init();
+    });
+}
   
 // Function to add a department to the database
 function addDepartment() {
