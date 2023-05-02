@@ -93,7 +93,7 @@ function viewRoles() {
   }
   
   // Function to view all employees
-  function viewEmployees() {
+function viewEmployees() {
     connection.query(
       "SELECT employees.id, employees.first_name, employees.last_name, roles.name AS title, departments.name AS department, roles.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employees LEFT JOIN roles ON employees.role_id = roles.id LEFT JOIN departments ON roles.dept_id = departments.id LEFT JOIN employees manager ON employees.manager_id = manager.id",
       (err, res) => {
@@ -104,3 +104,104 @@ function viewRoles() {
     );
   }
   
+// Function to add a department to the database
+function addDepartment() {
+    inquirer
+      .prompt({
+        name: "departmentName",
+        type: "input",
+        message: "Enter the name of the department you want to add: ",
+        validate: (input) => {
+          if (input) {
+            return true;
+          } else {
+            console.log("Please enter the name of the department.");
+            return false;
+          }
+        },
+      })
+      .then((answer) => {
+        connection.query(
+          "INSERT INTO departments SET ?",
+          {
+            name: answer.departmentName,
+          },
+          (err, res) => {
+            if (err) throw err;
+            console.log(`${res.affectedRows} department inserted!\n`);
+            // re-prompt the user for what they want to do
+            start();
+          }
+        );
+      });
+  }
+
+// Function to add a role to the database
+function addRole() {
+    connection.query("SELECT * FROM departments", (err, results) => {
+      if (err) throw err;
+      inquirer
+        .prompt([
+          {
+            name: "roleTitle",
+            type: "input",
+            message: "Enter the name of the role you want to add: ",
+            validate: (input) => {
+              if (input) {
+                return true;
+              } else {
+                console.log("Please enter the name of the role.");
+                return false;
+              }
+            },
+          },
+          {
+            name: "roleSalary",
+            type: "input",
+            message: "Enter the salary for this role: ",
+            validate: (input) => {
+              if (isNaN(input)) {
+                console.log("Please enter a valid salary.");
+                return false;
+              } else {
+                return true;
+              }
+            },
+          },
+          {
+            name: "roleDepartment",
+            type: "list",
+            message: "Select the department for this role: ",
+            choices: function () {
+              let choiceArray = [];
+              results.forEach((department) => {
+                choiceArray.push(department.name);
+              });
+              return choiceArray;
+            },
+          },
+        ])
+        .then((answer) => {
+          let chosenDepartment;
+          results.forEach((department) => {
+            if (department.name === answer.roleDepartment) {
+              chosenDepartment = department;
+            }
+          });
+          connection.query(
+            "INSERT INTO roles SET ?",
+            {
+              name: answer.roleTitle,
+              salary: answer.roleSalary,
+              dept_id: chosenDepartment.id,
+            },
+            (err, res) => {
+              if (err) throw err;
+              console.log(`${res.affectedRows} role inserted!\n`);
+              // re-prompt the user for what they want to do
+              start();
+            }
+          );
+        });
+    });
+  }
