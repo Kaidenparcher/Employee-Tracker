@@ -134,7 +134,7 @@ function addDepartment() {
           }
         );
       });
-  }
+}
 
 // Function to add a role to the database
 function addRole() {
@@ -204,4 +204,64 @@ function addRole() {
           );
         });
     });
-  }
+}
+
+function addEmployee() {
+    console.log("Please provide the following information for the new employee:");
+    inquirer
+      .prompt([
+        {
+          name: "first_name",
+          type: "input",
+          message: "First Name: ",
+          validate: function (input) {
+            if (input === "") {
+              return "Please provide a valid first name";
+            } else {
+              return true;
+            }
+          },
+        },
+        {
+          name: "last_name",
+          type: "input",
+          message: "Last Name: ",
+          validate: function (input) {
+            if (input === "") {
+              return "Please provide a valid last name";
+            } else {
+              return true;
+            }
+          },
+        },
+        {
+          name: "role_id",
+          type: "list",
+          message: "Select the employee's role:",
+          choices: roleChoices,
+        },
+        {
+          name: "manager_id",
+          type: "list",
+          message: "Select the employee's manager:",
+          choices: managerChoices,
+        },
+      ])
+      .then((answer) => {
+        connection.query(
+          "INSERT INTO employees SET ?",
+          {
+            first_name: answer.first_name,
+            last_name: answer.last_name,
+            role_id: answer.role_id,
+            manager_id: answer.manager_id,
+          },
+          function (err) {
+            if (err) throw err;
+            console.log("The new employee was added successfully!");
+            start();
+          }
+        );
+      });
+}
+  
