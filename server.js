@@ -17,7 +17,7 @@ function viewDepartments() {
   db.query(`SELECT * FROM departments`, (err, result) => {
       if (err) {
           console.error(err);
-          return 'error: failed to retrieve department list.';
+          return 'error: cannot find the list of deparments.';
       }
       console.table(result);
       init();
@@ -28,7 +28,7 @@ function viewRoles() {
   db.query(`SELECT * FROM roles`, (err, result) => {
       if (err) {
           console.error(err);
-          return 'error: failed to retrieve department list.';
+          return 'error: cannot find the list of roles.';
       }
       console.table(result);
       init();
@@ -70,17 +70,17 @@ function addRole() {
       {
           type: 'input',
           name: 'title',
-          message: 'What is the new role\'s title?'
+          message: 'What is the new roles title?'
       },
       {
           type: 'input',
           name: 'salary',
-          message: 'What is the new role\'s salary?'
+          message: 'What is the new roles salary?'
       },
       {
           type: 'input',
           name: 'departmentId',
-          message: 'What is the ID of the new role\'s department?'
+          message: 'What is the department ID of the new role?'
       }
   ]).then((data) => {
       const { title, salary, departmentId } = data;
@@ -100,22 +100,22 @@ function addEmployee() {
       {
           type: 'input',
           name: 'firstName',
-          message: 'What is the employee\'s first name?'
+          message: 'What is the employees first name?'
       },
       {
           type: 'input',
           name: 'lastName',
-          message: 'What is the employee\'s last name?'
+          message: 'What is the employees last name?'
       },
       {
           type: 'input',
           name: 'roleId',
-          message: 'What is the ID of their role?'
+          message: 'What is the role ID?'
       },
       {
           type: 'input',
           name: 'managerId',
-          message: 'What is the ID of their manager?'
+          message: 'What is the manager ID?'
       }
   ]).then((data) => {
       const { firstName, lastName, roleId, managerId } = data;
@@ -136,12 +136,12 @@ function updateEmployeeRole() {
       {
           type: 'input',
           name: 'employeeId',
-          message: 'Which employee would you like to update?'
+          message: 'Which employee are you looking update?'
       },
       {
           type: 'input',
           name: 'roleId',
-          message: 'What would you like their new role to be?'
+          message: 'What is their new role?'
       }
   ]).then((data) => {
       const { employeeId, roleId } = data;
@@ -164,7 +164,7 @@ function init() {
       type: 'list',
       name: 'action',
       message: 'What would you like to do?',
-      choices: ['View departments', 'View roles', 'View employees', 'Add a department', 'Add a role', 'Add an employee', 'Update an employee\'s role']
+      choices: ['View departments', 'View roles', 'View employees', 'Add a new department', 'Add a new role', 'Add a new employee', 'Update an employees role', 'Exit']
   }]).then((choice) => {
       switch(choice.action) {
           case 'View departments':
@@ -176,20 +176,42 @@ function init() {
           case 'View employees':
               viewEmployees();
               break;
-          case 'Add a department':
+          case 'Add new department':
               addDepartment();
               break;
-          case 'Add a role':
+          case 'Add new role':
               addRole();
               break;
-          case 'Add an employee':
+          case 'Add new employee':
               addEmployee();
               break;
-          case 'Update an employee\'s role':
+          case 'Update an employees role':
               updateEmployeeRole();
               break;
+          case 'Exit':
+              exitPrompt();
+              break;
+        
       }
   })
 }
 
 init();
+
+function exitPrompt(){ 
+    inquirer
+        .prompt([
+            {
+                type: 'list',
+                name: 'action',
+                message: 'Done?',
+                choices: [
+                    'Exit'
+                ]
+            }
+        ]).then (action => {
+            console.clear();
+            startPrompt();
+
+        })
+}
