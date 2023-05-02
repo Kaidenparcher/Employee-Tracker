@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 // Create a connection to the database
 const connection = mysql.createConnection({
@@ -31,7 +31,6 @@ function start() {
           'Add a department',
           'Add a role',
           'Add an employee',
-          'Update an employee role',
           'Exit'
         ]
       })
@@ -61,9 +60,6 @@ function start() {
             addEmployee();
             break;
   
-          case 'Update an employee role':
-            updateEmployeeRole();
-            break;
   
           case 'Exit':
             connection.end();
@@ -83,7 +79,7 @@ function start() {
 // Function to view all roles
 function viewRoles() {
     connection.query(
-      "SELECT roles.id, roles.name, departments.name AS department, roles.salary FROM roles LEFT JOIN departments ON roles.dept_id = departments.id",
+      "SELECT roles.id, roles.name, departments.name AS department FROM roles LEFT JOIN departments ON roles.dept_id = departments.id",
       (err, res) => {
         if (err) throw err;
         console.table(res);
