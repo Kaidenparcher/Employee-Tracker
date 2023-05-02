@@ -2,79 +2,61 @@ const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
 // Create a connection to the database
-const connection = mysql.createConnection({
+const db = mysql.createConnection({
   host: '127.0.0.1',
-  port: 3306,
   user: 'root',
   password: 'password',
   database: 'staff_db'
-});
+},
+  console.log('Connected to the database')
+);
 
-// Connect to the database
-connection.connect((err) => {
-  if (err) throw err;
-  console.log('Connected to the database');
-  start();
-});
+
 
 // Prompt user to select an option
-function start() {
-    inquirer
-      .prompt({
-        name: 'action',
-        type: 'list',
-        message: 'What would you like to do?',
-        choices: [
-          'View all departments',
-          'View all roles',
-          'View all employees',
-          'Add a department',
-          'Add a role',
-          'Add an employee',
-          'Exit'
-        ]
-      })
-      .then((answer) => {
-        switch (answer.action) {
-          case 'View all departments':
-            viewDepartments();
-            break;
-  
-          case 'View all roles':
-            viewRoles();
-            break;
-  
-          case 'View all employees':
-            viewEmployees();
-            break;
-  
+function init() {
+  inquirer.prompt([{
+      type: 'list',
+      name: 'action',
+      message: 'What would you like to do?',
+      choices: ['View departments', 'View roles', 'View employees', 'Add a department', 'Add a role', 'Add an employee', 'Update an employee\'s role']
+  }]).then((choice) => {
+      switch(choice.action) {
+          case 'View departments':
+              viewDepartments();
+              break;
+          case 'View roles':
+              viewRoles();
+              break;
+          case 'View employees':
+              viewEmployees();
+              break;
           case 'Add a department':
-            addDepartment();
-            break;
-  
+              addDepartment();
+              break;
           case 'Add a role':
-            addRole();
-            break;
-  
+              addRole();
+              break;
           case 'Add an employee':
-            addEmployee();
-            break;
-  
-  
-          case 'Exit':
-            connection.end();
-            break;
-        }
-      });
-  }
+              addEmployee();
+              break;
+          case 'Update an employee\'s role':
+              updateEmployeeRole();
+              break;
+      }
+  })
+}
 
-  function viewDepartments() {
-    connection.query("SELECT * FROM departments", (err, res) => {
-      if (err) throw err;
-      console.table(res);
-      start();
-    });
-  }
+function viewDepartments() {
+  db.query(`SELECT * FROM departments`, (err, result) => {
+      if (err) {
+          console.error(err);
+          return 'error: Failed to find list of departments.';
+      }
+      console.table(result);
+      init();
+  });
+}
 
 // Function to view all roles
 function viewRoles() {
@@ -261,3 +243,4 @@ function addEmployee() {
       });
 }
   
+init();
