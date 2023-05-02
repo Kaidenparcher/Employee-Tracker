@@ -1,29 +1,31 @@
+USE staff_db;
+
 INSERT INTO departments (name)
 VALUES ("Sales and Marketing"),
        ("Finance and Accounting"),
-       ("Research and Development"),
+       ("Consulting"),
        ("Human Resources"),
        ("Customer Service");
        
 
-INSERT INTO roles (name)
-VALUES  ("CEO/Executive Director"),
-        ("COO/Chief Operations Officer"),
-        ("CFO/Chief Financial Officer"),
-        ("Account Executive"),
-        ("Lead Scientist"),
-        ("Daily Manager"),
-        ("Talent Scout"),
-        ("Customer Service Manager");
+INSERT INTO roles (title, salary, department_id)
+VALUES  ("CEO/Executive Director", 200000, null),
+        ("COO/Chief Operations Officer", 150000, 1),
+        ("CFO/Chief Financial Officer", 150000, 2),
+        ("Account Executive", 95000, 2),
+        ("Lead Consultant", 120000, 3),
+        ("HR Manager" 85000, 4),
+        ("Talent Scout" 65000, 3),
+        ("Customer Service Manager", 70000, 5);
 
 
-INSERT INTO employees (first_name, last_name, dept_id, role_id, manager_id, salary)
-VALUES  ('Liana', 'Bird', null, 1, null, 200000),
-        ('Evan', 'Pittman', 1, 6, 2, 75000),
-        ('Kelly', 'Johnson', 1, 7, 2, 50000),
-        ('Ray', 'Branch', 3, 5, 3, 90000),
-        ('Trey', 'Olsen', 3, 5, 1, 90000),
-        ('Louisa', 'Hammond', 5, 8, 3, 60000),
-        ('Rebekah', 'Yang', 4, 2, 5, 110000),
-        ('Leo', 'Kerr', 2, 3, 2, 150000),
-        ('Marissa', 'Cooper', 2, 4, 1, 80000);
+INSERT INTO employees (first_name, last_name, role_id, manager_id)
+VALUES  ('Liana', 'Bird', 1, null),
+        ('Evan', 'Pittman', 2, 1),
+        ('Kelly', 'Johnson', 3, 1),
+        ('Ray', 'Branch', 4, 3),
+        ('Trey', 'Olsen', 4, 3),
+        ('Louisa', 'Hammond', 6, 2),
+        ('Rebekah', 'Yang', 7, 2),
+        ('Leo', 'Kerr', 8, 2),
+        ('Marissa', 'Cooper', 7, 2);
